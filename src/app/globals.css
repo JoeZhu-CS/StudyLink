@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 160 60% 94%;
+    --accent-foreground: 160 84% 20%;
+    --border: 214 32% 91%;
+    --ring: 199 89% 48%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  /* Better tap/click targets and focus for accessibility */
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible {
+    @apply outline-none ring-2 ring-sky-500/50 ring-offset-2;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+}
+
+/* Leaflet map – minimal required styles (no node_modules import) */
+.leaflet-container {
+  font-family: inherit;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-overlay-pane,
+.leaflet-shadow-pane,
+.leaflet-marker-pane,
+.leaflet-tooltip-pane,
+.leaflet-popup-pane {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.leaflet-tile-pane { z-index: 2; }
+.leaflet-overlay-pane { z-index: 4; }
+.leaflet-shadow-pane { z-index: 5; }
+.leaflet-marker-pane { z-index: 6; }
+.leaflet-tooltip-pane { z-index: 650; }
+.leaflet-popup-pane { z-index: 7; }
+.leaflet-map-pane { z-index: 2; }
+.leaflet-tile {
+  max-width: none !important;
+  max-height: none !important;
+  width: 256px;
+  height: 256px;
+}
+.leaflet-zoom-animated {
+  transform-origin: 0 0;
+}
+.leaflet-control-zoom {
+  border: none !important;
+  margin: 8px !important;
+}
+.leaflet-control-zoom a {
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  font-size: 18px !important;
+  background: white !important;
+  color: #334155 !important;
+  border-radius: 6px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.leaflet-control-zoom a:hover {
+  background: #f8fafc !important;
+}
+.leaflet-tooltip.study-buddy-tooltip {
+  background: rgba(15, 23, 42, 0.9);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.study-buddy-marker {
+  background: transparent !important;
+  border: none !important;
+}
