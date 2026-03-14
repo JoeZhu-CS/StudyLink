@@ -61,6 +61,22 @@ export const LOCATIONS = [
   "Claude T. Bissell",
 ] as const
 
+/** Haversine distance in km between two [lat, lng] coordinates */
+export function haversineKm(
+  [lat1, lon1]: [number, number],
+  [lat2, lon2]: [number, number]
+): number {
+  const R = 6371
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLon = ((lon2 - lon1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
 /** Coordinates for U of T St. George campus area (lat, lng) */
 export const LOCATION_COORDS: Record<string, [number, number]> = {
   "Robarts Library": [43.6681, -79.3955],

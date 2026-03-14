@@ -44,24 +44,6 @@ export function TopBar({
           <h1 className="text-lg font-semibold text-slate-900 truncate">{title}</h1>
         ) : null}
       </div>
-      {rightIcons !== "none" && rightIcons === "default" && (
-        <div className="flex items-center gap-1 flex-shrink-0">
-          <Link
-            href="/saved-partners"
-            className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
-            aria-label="Saved partners"
-          >
-            <Users className="h-5 w-5 text-slate-600" />
-          </Link>
-          <Link
-            href="/profile"
-            className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
-            aria-label="Profile"
-          >
-            <User className="h-5 w-5 text-slate-600" />
-          </Link>
-        </div>
-      )}
     </header>
   )
 }

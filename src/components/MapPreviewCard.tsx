@@ -23,7 +23,7 @@ interface MapPreviewCardProps {
 export function MapPreviewCard({ className }: MapPreviewCardProps) {
   return (
     <div className={cn("overflow-hidden rounded-xl border border-slate-200 shadow-sm", className)}>
-      <CampusMap height="140px" className="w-full" />
+      <CampusMap height="180px" className="w-full" />
       <p className="text-[10px] text-slate-400 px-2 py-1.5 bg-slate-50 border-t border-slate-100">
         Your location and session spots · OpenStreetMap
       </p>

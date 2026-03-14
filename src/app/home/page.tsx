@@ -8,7 +8,7 @@ import { MapPreviewCard } from "@/components/MapPreviewCard"
 import { SessionCardCollapsed } from "@/components/SessionCardCollapsed"
 import { SessionCardExpanded } from "@/components/SessionCardExpanded"
 import { ActiveSessionBar } from "@/components/ActiveSessionBar"
-import { recommendedSessions } from "@/lib/mock-data"
+import { recommendedSessions, LOCATION_COORDS, haversineKm } from "@/lib/mock-data"
 import { useAppStore } from "@/context/AppStoreContext"
 
 export default function HomePage() {
@@ -17,6 +17,25 @@ export default function HomePage() {
   const { store, clearActiveSession, addSavedPartner, isPartnerSaved } = useAppStore()
   const [expandedSessionId, setExpandedSessionId] = useState<string | null>(null)
 
+  const userCoord = LOCATION_COORDS[store.defaultLocation]
+  const sortedSessions = [...recommendedSessions].sort((a, b) => {
+    if (!userCoord) return 0
+    const ca = LOCATION_COORDS[a.location]
+    const cb = LOCATION_COORDS[b.location]
+    if (!ca) return 1
+    if (!cb) return -1
+    return haversineKm(userCoord, ca) - haversineKm(userCoord, cb)
+  })
+  const getDistance = (location: string): string | null => {
+    if (!userCoord) return null
+    const coord = LOCATION_COORDS[location]
+    if (!coord) return null
+    const km = haversineKm(userCoord, coord)
+    if (km < 0.05) return "Here"
+    if (km < 1) return `${Math.round(km * 1000)} m`
+    return `${km.toFixed(1)} km`
+  }
+
   const demoActive = searchParams.get("active") === "1"
   const hasActiveSession = !!store.activeSession || demoActive
   const toggleExpand = (id: string) => {
@@ -24,10 +43,10 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col min-h-[780px]">
+    <div className="flex flex-col h-full">
       <TopBar locationChip={store.defaultLocation} />
 
-      <main className="flex-1 overflow-y-auto px-4 pb-24">
+      <main className="flex-1 overflow-y-auto px-4 pb-4">
         {hasActiveSession && (
           <ActiveSessionBar
             location={store.activeSession?.location ?? "Robarts Library"}
@@ -72,7 +91,7 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-3 mt-4">
-          {recommendedSessions.map((session) => (
+          {sortedSessions.map((session) => (
             <div key={session.id}>
               {expandedSessionId === session.id ? (
                 <SessionCardExpanded
@@ -85,6 +104,7 @@ export default function HomePage() {
                   session={session}
                   expanded={false}
                   onClick={() => toggleExpand(session.id)}
+                  distance={getDistance(session.location)}
                 />
               )}
             </div>
@@ -92,7 +112,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-slate-200 mx-auto max-w-[420px]">
+      <div className="p-4 bg-white/95 backdrop-blur-sm border-t border-slate-200">
         <Link
           href="/new-session"
           className="block w-full py-4 rounded-xl bg-sky-600 text-white font-semibold text-center hover:bg-sky-700 active:bg-sky-800 transition-colors shadow-lg shadow-sky-600/25 hover:shadow-sky-600/30"

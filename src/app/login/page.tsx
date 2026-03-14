@@ -13,33 +13,47 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [displayName, setDisplayName] = useState("")
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
   const { login, store } = useAppStore()
 
   useEffect(() => {
-    if (store.isLoggedIn) router.replace("/home")
-  }, [store.isLoggedIn, router])
+    if (store.isLoggedIn && !isSignUp) router.replace("/home")
+  }, [store.isLoggedIn, router, isSignUp])
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     setError("")
-    if (!email.trim()) {
-      setError("Please enter your email")
-      return
+    if (!email.trim()) { setError("Please enter your email"); return }
+    if (!password.trim()) { setError("Please enter your password"); return }
+    if (isSignUp && password.length < 8) { setError("Password must be at least 8 characters"); return }
+
+    setLoading(true)
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: isSignUp ? "signup" : "login",
+          email: email.trim(),
+          password,
+          name: displayName.trim() || undefined,
+        }),
+      })
+      const data = await res.json()
+      if (!data.success) {
+        setError(data.error ?? "Something went wrong")
+        return
+      }
+      login({
+        name: data.user.name,
+        email: data.user.email,
+        avatar: data.user.name.slice(0, 2).toUpperCase(),
+      })
+      router.push(isSignUp ? "/profile?setup=true" : "/home")
+    } catch {
+      setError("Network error — please try again")
+    } finally {
+      setLoading(false)
     }
-    if (!password.trim()) {
-      setError("Please enter your password")
-      return
-    }
-    if (isSignUp && password.length < 8) {
-      setError("Password must be at least 8 characters")
-      return
-    }
-    const name = isSignUp ? displayName.trim() || email.split("@")[0] : email.split("@")[0]
-    login({
-      name: name || "You",
-      email: email.trim(),
-      avatar: (name || "Y").slice(0, 2).toUpperCase(),
-    })
-    router.push("/home")
   }
 
   return (
@@ -51,9 +65,7 @@ export default function LoginPage() {
         </p>
 
         {error && (
-          <p className="mt-3 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
-            {error}
-          </p>
+          <p className="mt-3 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
         )}
 
         <div className="mt-10 space-y-4">
@@ -89,10 +101,7 @@ export default function LoginPage() {
 
         <button
           type="button"
-          onClick={() => {
-            setIsSignUp(!isSignUp)
-            setError("")
-          }}
+          onClick={() => { setIsSignUp(!isSignUp); setError("") }}
           className="mt-4 text-sm text-sky-600 hover:text-sky-700 font-medium"
         >
           {isSignUp ? "Already have an account? Sign in" : "Create account instead"}
@@ -103,15 +112,29 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={handleContinue}
-          className="block w-full py-3 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition-colors"
+          disabled={loading}
+          className="block w-full py-3 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition-colors disabled:opacity-60"
         >
-          Continue
+          {loading ? "Please wait…" : "Continue"}
         </button>
         <button
           type="button"
-          onClick={() => {
-            login({ name: "Demo User", email: "demo@utoronto.ca", avatar: "DU" })
-            router.push("/home")
+          onClick={async () => {
+            setLoading(true)
+            try {
+              const res = await fetch("/api/auth", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "login", email: "demo@utoronto.ca", password: "password123" }),
+              })
+              const data = await res.json()
+              if (data.success) {
+                login({ name: data.user.name, email: data.user.email, avatar: "DU" })
+                router.push("/home")
+              }
+            } finally {
+              setLoading(false)
+            }
           }}
           className="w-full py-3 rounded-lg border border-slate-200 font-medium flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors"
         >

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { TopBar } from "@/components/TopBar"
 import { ProfileInfoCard } from "@/components/ProfileInfoCard"
@@ -13,6 +13,8 @@ import { useAppStore } from "@/context/AppStoreContext"
 
 export default function ProfilePage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isSetup = searchParams.get("setup") === "true"
   const { store, updateProfile, logout } = useAppStore()
   const [program, setProgram] = useState(store.user.program)
   const [level, setLevel] = useState(store.user.level)
@@ -48,6 +50,10 @@ export default function ProfilePage() {
       bio,
       defaultLocation,
     })
+    if (isSetup) {
+      router.push("/home")
+      return
+    }
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
@@ -56,9 +62,16 @@ export default function ProfilePage() {
 
   return (
     <div className="flex flex-col min-h-[780px]">
-      <TopBar title="My Profile" showBack backHref="/home" />
+      <TopBar title={isSetup ? "Set Up Your Profile" : "My Profile"} showBack={!isSetup} backHref="/home" />
 
       <main className="flex-1 overflow-y-auto px-4 pb-32">
+        {isSetup && (
+          <div className="mt-4 px-4 py-3 bg-sky-50 border border-sky-200 rounded-xl">
+            <p className="text-sm font-semibold text-sky-800">Welcome! Complete your profile</p>
+            <p className="text-xs text-sky-600 mt-0.5">Help us match you with the right study partners.</p>
+          </div>
+        )}
+
         <ProfileInfoCard
           name={store.user.name}
           avatar={store.user.avatar}
@@ -145,14 +158,16 @@ export default function ProfilePage() {
             onClick={handleSave}
             className="flex-1 py-3 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700"
           >
-            {saved ? "Saved" : "Save Changes"}
+            {isSetup ? "Get Started" : saved ? "Saved" : "Save Changes"}
           </button>
-          <Link
-            href="/home"
-            className="flex-1 py-3 rounded-lg border border-slate-200 font-medium text-center hover:bg-slate-50"
-          >
-            Cancel
-          </Link>
+          {!isSetup && (
+            <Link
+              href="/home"
+              className="flex-1 py-3 rounded-lg border border-slate-200 font-medium text-center hover:bg-slate-50"
+            >
+              Cancel
+            </Link>
+          )}
         </div>
 
         <button

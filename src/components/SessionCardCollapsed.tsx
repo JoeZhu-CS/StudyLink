@@ -10,6 +10,7 @@ interface SessionCardCollapsedProps {
   expanded?: boolean
   onClick?: () => void
   className?: string
+  distance?: string | null
 }
 
 export function SessionCardCollapsed({
@@ -17,6 +18,7 @@ export function SessionCardCollapsed({
   expanded,
   onClick,
   className,
+  distance,
 }: SessionCardCollapsedProps) {
   const { student, location, course, goal, recommendationReasons } = session
 
@@ -43,6 +45,11 @@ export function SessionCardCollapsed({
           </div>
           <p className="text-sm text-slate-600 truncate">
             {location} · {course}
+            {distance && (
+              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                {distance}
+              </span>
+            )}
           </p>
           <p className="text-xs text-slate-500 mt-1 truncate">{goal}</p>
           {recommendationReasons.length > 0 && (

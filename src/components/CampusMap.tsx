@@ -37,11 +37,12 @@ function loadLeaflet(): Promise<typeof window.L> {
 declare global {
   interface Window {
     L?: {
-      map: (el: HTMLElement, opts: object) => { remove: () => void; invalidateSize: () => void }
+      map: (el: HTMLElement, opts: object) => { remove: () => void; invalidateSize: () => void; fitBounds: (bounds: unknown, opts?: object) => void }
       control: { zoom: (opts: object) => { addTo: (m: unknown) => unknown } }
       tileLayer: (url: string, opts: object) => { addTo: (m: unknown) => unknown }
       divIcon: (opts: object) => unknown
       marker: (latlng: [number, number], opts: object) => { addTo: (m: unknown) => { bindTooltip: (s: string, opts: object) => unknown } }
+      latLngBounds: (coords: [number, number][]) => unknown
     }
   }
 }
@@ -69,10 +70,9 @@ export function CampusMap({ className, height = "140px" }: CampusMapProps) {
     loadLeaflet()
       .then((L) => {
         if (!containerRef.current || !L) return
-        const defaultCenter = LOCATION_COORDS[store.defaultLocation] ?? [43.665, -79.395]
         const map = L.map(containerRef.current, {
-          center: defaultCenter,
-          zoom: 16,
+          center: [43.665, -79.395],
+          zoom: 15,
           zoomControl: false,
           scrollWheelZoom: false,
           dragging: true,
@@ -89,14 +89,7 @@ export function CampusMap({ className, height = "140px" }: CampusMapProps) {
           iconSize: [12, 12],
           iconAnchor: [6, 6],
         })
-        const sessionIcon = L.divIcon({
-          className: "study-buddy-marker study-buddy-marker-session",
-          html: `<span style="width:10px;height:10px;border-radius:50%;background:#059669;border:2px solid white;box-shadow:0 1px 2px rgba(0,0,0,0.25);display:block;"></span>`,
-          iconSize: [10, 10],
-          iconAnchor: [5, 5],
-        })
-
-        const defaultCoord = LOCATION_COORDS[store.defaultLocation]
+const defaultCoord = LOCATION_COORDS[store.defaultLocation]
         if (defaultCoord) {
           L.marker(defaultCoord, { icon: defaultIcon })
             .addTo(map)
@@ -106,20 +99,40 @@ export function CampusMap({ className, height = "140px" }: CampusMapProps) {
               className: "study-buddy-tooltip",
             })
         }
-        const addedLocs = new Set<string>()
+        const shortLocation = (loc: string) => {
+          if (loc.startsWith("Near ")) return loc          // keep "Near Bloor" etc.
+          if (loc.startsWith("Claude T.")) return "Bissell"
+          if (loc.includes("Bahen")) return "Bahen"
+          return loc.split(" ")[0]
+        }
+
         recommendedSessions.forEach((session) => {
           const coord = LOCATION_COORDS[session.location]
-          if (coord && !addedLocs.has(session.location)) {
-            addedLocs.add(session.location)
-            L.marker(coord, { icon: sessionIcon })
-              .addTo(map)
-              .bindTooltip(`${session.location} · ${session.course}`, {
-                permanent: false,
-                direction: "top",
-                className: "study-buddy-tooltip",
-              })
-          }
+          if (!coord) return
+          const firstName = session.student.name.split(" ")[0]
+          const avatar = session.student.avatar
+          const locLabel = shortLocation(session.location)
+          const personIcon = L.divIcon({
+            className: "",
+            html: `<div style="display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="background:#059669;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,0.3);border:2px solid white;flex-shrink:0;">${avatar}</div><div style="background:white;color:#1e293b;border:1.5px solid #059669;border-radius:8px;padding:1px 5px;font-size:9px;font-weight:600;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,0.15);">${firstName}</div><div style="color:#059669;font-size:8px;font-weight:500;white-space:nowrap;">${locLabel}</div></div>`,
+            iconSize: [50, 46] as [number, number],
+            iconAnchor: [25, 10] as [number, number],
+          })
+          L.marker(coord, { icon: personIcon })
+            .addTo(map)
+            .bindTooltip(`${session.student.name} · ${session.location} · ${session.course}`, {
+              permanent: false,
+              direction: "top",
+              className: "study-buddy-tooltip",
+            })
         })
+        const allCoords: [number, number][] = [
+          ...(LOCATION_COORDS[store.defaultLocation] ? [LOCATION_COORDS[store.defaultLocation]] : []),
+          ...recommendedSessions.map((s) => LOCATION_COORDS[s.location]).filter(Boolean),
+        ]
+        if (allCoords.length > 1) {
+          map.fitBounds(L.latLngBounds(allCoords), { padding: [30, 50], maxZoom: 15 })
+        }
         map.invalidateSize()
         mapRef.current = map
       })
