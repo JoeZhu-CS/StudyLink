@@ -188,6 +188,51 @@ export const ALL_STUDENTS: Student[] = [
     habits: "Active discussion", studentId: "1011234567",
     weeklyAvailability: wa({ tue: ["16:00", "18:00"], fri: ["16:00", "18:00"] }),
   }),
+  st("12", "Nora Lin", "NL", true, "CS", "Major", {
+    year: 2, courses: ["CSC343", "CSC311"], defaultLocation: "Robarts Library",
+    habits: "Focused review", studentId: "1012345678",
+    weeklyAvailability: wa({ tue: ["11:00", "13:00"], thu: ["11:00", "13:00"] }),
+  }),
+  st("13", "Ethan Wu", "EW", false, "CS", "Specialist", {
+    year: 3, courses: ["CSC343", "CSC309"], defaultLocation: "Bahen Centre for Information Technology",
+    habits: "Active discussion", studentId: "1013456789",
+    weeklyAvailability: wa({ wed: ["14:00", "16:00"], fri: ["18:00", "20:00"] }),
+  }),
+  st("14", "Priya Nair", "PN", true, "CS", "Major", {
+    year: 2, courses: ["CSC165", "CSC318"], defaultLocation: "Kelly Library",
+    habits: "Active discussion", studentId: "1014567890",
+    weeklyAvailability: wa({ mon: ["13:00", "15:00"], thu: ["11:00", "13:00"] }),
+  }),
+  st("15", "Leo Martin", "LM", true, "CS", "Major", {
+    year: 3, courses: ["CSC311", "CSC309"], defaultLocation: "University College Library",
+    habits: "Quiet study", studentId: "1015678901",
+    weeklyAvailability: wa({ tue: ["10:30", "12:30"], fri: ["10:30", "12:30"] }),
+  }),
+  st("16", "Ava Scott", "AS", true, "Economics", "Minor", {
+    year: 2, courses: ["ECO101", "STA247"], defaultLocation: "Kelly Library",
+    habits: "Focused review", studentId: "1016789012",
+    weeklyAvailability: wa({ mon: ["12:30", "14:00"], wed: ["10:00", "11:30"] }),
+  }),
+  st("17", "Owen Brooks", "OB", false, "Math", "Major", {
+    year: 1, courses: ["MAT137", "CSC165"], defaultLocation: "Claude T. Bissell",
+    habits: "Collaborative problem solving", studentId: "1017890123",
+    weeklyAvailability: wa({ tue: ["15:30", "17:00"], thu: ["15:30", "17:00"] }),
+  }),
+  st("18", "Chloe Davis", "CD", true, "CS", "Specialist", {
+    year: 2, courses: ["CSC318", "CSC343"], defaultLocation: "Bahen Centre for Information Technology",
+    habits: "Peer teaching", studentId: "1018901234",
+    weeklyAvailability: wa({ wed: ["16:00", "18:00"], sat: ["13:00", "15:00"] }),
+  }),
+  st("19", "Noah Singh", "NS", true, "Statistics", "Major", {
+    year: 3, courses: ["STA247", "CSC311"], defaultLocation: "Robarts Library",
+    habits: "Active discussion", studentId: "1019012345",
+    weeklyAvailability: wa({ tue: ["13:30", "15:30"], thu: ["16:00", "18:00"] }),
+  }),
+  st("20", "Emma Flores", "EF", false, "Economics", "Major", {
+    year: 2, courses: ["ECO101", "CSC309"], defaultLocation: "Near Bloor",
+    habits: "Catch-up session", studentId: "1020123456",
+    weeklyAvailability: wa({ mon: ["15:00", "17:00"], fri: ["17:00", "18:30"] }),
+  }),
 ]
 
 export const ALL_SESSIONS: Session[] = [
@@ -257,6 +302,96 @@ export const ALL_SESSIONS: Session[] = [
     studyStyle: "active-discussion", duration: "2 hr", time: "16:00 – 18:00", date: futureDate(5),
     recommendationReasons: [],
   },
+  {
+    id: "s12", student: ALL_STUDENTS[11], location: "Robarts Library",
+    course: "CSC343", goal: "Review ER models and practice SQL queries before the quiz.",
+    studyStyle: "focused-review", duration: "2 hr", time: "11:00 – 13:00", date: futureDate(8),
+    recommendationReasons: [],
+  },
+  {
+    id: "s13", student: ALL_STUDENTS[12], location: "Bahen Centre for Information Technology",
+    course: "CSC309", goal: "Pair on React state management and polish assignment features.",
+    studyStyle: "active-discussion", duration: "2 hr", time: "14:00 – 16:00", date: futureDate(7),
+    recommendationReasons: [],
+  },
+  {
+    id: "s14", student: ALL_STUDENTS[13], location: "Kelly Library",
+    course: "CSC165", goal: "Practice induction proofs and work through past logic questions.",
+    studyStyle: "active-discussion", duration: "2 hr", time: "13:00 – 15:00", date: futureDate(9),
+    recommendationReasons: [],
+  },
+  {
+    id: "s15", student: ALL_STUDENTS[14], location: "University College Library",
+    course: "CSC311", goal: "Review machine learning concepts and compare notes for the quiz.",
+    studyStyle: "quiet-study", duration: "2 hr", time: "10:30 – 12:30", date: futureDate(10),
+    recommendationReasons: [],
+  },
+  {
+    id: "s16", student: ALL_STUDENTS[15], location: "Kelly Library",
+    course: "ECO101", goal: "Go over demand and supply diagrams before the tutorial.",
+    studyStyle: "focused-review", duration: "1.5 hr", time: "12:30 – 14:00", date: futureDate(6),
+    recommendationReasons: [],
+  },
+  {
+    id: "s17", student: ALL_STUDENTS[16], location: "Claude T. Bissell",
+    course: "CSC165", goal: "Work through proof structure and ask each other short questions.",
+    studyStyle: "collaborative-problem-solving", duration: "1.5 hr", time: "15:30 – 17:00", date: futureDate(4),
+    recommendationReasons: [],
+  },
+  {
+    id: "s18", student: ALL_STUDENTS[17], location: "Bahen Centre for Information Technology",
+    course: "CSC318", goal: "Brainstorm interface critique points and prepare the design review.",
+    studyStyle: "peer-teaching", duration: "2 hr", time: "16:00 – 18:00", date: futureDate(8),
+    recommendationReasons: [],
+  },
+  {
+    id: "s19", student: ALL_STUDENTS[18], location: "Robarts Library",
+    course: "STA247", goal: "Practice probability questions and review key formulas together.",
+    studyStyle: "focused-review", duration: "2 hr", time: "13:30 – 15:30", date: futureDate(7),
+    recommendationReasons: [],
+  },
+  {
+    id: "s20", student: ALL_STUDENTS[19], location: "Near Bloor",
+    course: "ECO101", goal: "Catch up on lecture notes and review elasticity concepts.",
+    studyStyle: "catch-up-session", duration: "1.5 hr", time: "17:00 – 18:30", date: futureDate(9),
+    recommendationReasons: [],
+  },
+  {
+    id: "s21", student: ALL_STUDENTS[11], location: "Robarts Library",
+    course: "CSC311", goal: "Review gradient descent intuition and prep for the machine learning midterm.",
+    studyStyle: "focused-review", duration: "2 hr", time: "14:30 – 16:30", date: futureDate(12),
+    recommendationReasons: [],
+  },
+  {
+    id: "s22", student: ALL_STUDENTS[13], location: "Kelly Library",
+    course: "CSC318", goal: "Walk through personas, wireframes, and usability heuristics together.",
+    studyStyle: "active-discussion", duration: "2 hr", time: "11:00 – 13:00", date: futureDate(11),
+    recommendationReasons: [],
+  },
+  {
+    id: "s23", student: ALL_STUDENTS[12], location: "Bahen Centre for Information Technology",
+    course: "CSC343", goal: "Practice relational algebra and compare solutions for past exam questions.",
+    studyStyle: "active-discussion", duration: "2 hr", time: "18:00 – 20:00", date: futureDate(13),
+    recommendationReasons: [],
+  },
+  {
+    id: "s24", student: ALL_STUDENTS[19], location: "University College Library",
+    course: "CSC309", goal: "Review Next.js routing and polish final project pages together.",
+    studyStyle: "catch-up-session", duration: "2 hr", time: "15:00 – 17:00", date: futureDate(5),
+    recommendationReasons: [],
+  },
+  {
+    id: "s25", student: ALL_STUDENTS[15], location: "Robarts Library",
+    course: "STA247", goal: "Review hypothesis testing and prepare for the weekly quiz.",
+    studyStyle: "focused-review", duration: "1.5 hr", time: "10:00 – 11:30", date: futureDate(8),
+    recommendationReasons: [],
+  },
+  {
+    id: "s26", student: ALL_STUDENTS[18], location: "Robarts Library",
+    course: "CSC311", goal: "Work through model evaluation questions and share cheat-sheet summaries.",
+    studyStyle: "active-discussion", duration: "2 hr", time: "16:00 – 18:00", date: futureDate(14),
+    recommendationReasons: [],
+  },
 ]
 
 export function getRecommendedSessions(
@@ -299,26 +434,43 @@ export function getRecommendedSessions(
 
 export function getMatchingSessions(
   course: string,
-  _location: string,
+  location: string,
   studyStyle: string,
   goal: string,
-  date?: string
+  _date?: string
 ): Session[] {
+  const normalizedCourse = course.trim().toUpperCase()
+  if (!normalizedCourse) return []
+
   const styleId = STUDY_STYLES.find((s) => s.label === studyStyle)?.id ?? "quiet-study"
-  const goalLower = goal.toLowerCase()
+  const goalWords = goal
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((word) => word.length > 2)
+  const locationLead = location.trim().split(" ")[0]?.toLowerCase() ?? ""
 
-  let sessions = ALL_SESSIONS
-  if (date) sessions = sessions.filter((s) => s.date === date)
+  return ALL_SESSIONS
+    .filter((session) => session.course.trim().toUpperCase() === normalizedCourse)
+    .map((session) => {
+      const styleScore = session.studyStyle === styleId ? 20 : 0
+      const goalScore = goalWords.some((word) => session.goal.toLowerCase().includes(word)) ? 8 : 0
+      const sessionLocation = session.location.toLowerCase()
+      const locationScore =
+        location.trim() && (
+          sessionLocation === location.toLowerCase() ||
+          (locationLead && sessionLocation.includes(locationLead))
+        )
+          ? 5
+          : 0
 
-  const byCourse = sessions.filter((s) => s.course === course)
-  const matched = byCourse.filter((s) => {
-    const styleMatch = s.studyStyle === styleId
-    const goalMatch =
-      !goal.trim() ||
-      goalLower.split(/\s+/).some((w) => w.length > 2 && s.goal.toLowerCase().includes(w))
-    return styleMatch || goalMatch
-  })
-  return (matched.length > 0 ? matched : byCourse).slice(0, 3)
+      return {
+        session,
+        score: 100 + styleScore + goalScore + locationScore,
+      }
+    })
+    .sort((a, b) => b.score - a.score || a.session.date.localeCompare(b.session.date) || a.session.time.localeCompare(b.session.time))
+    .slice(0, 3)
+    .map(({ session }) => session)
 }
 
 export const savedPartners: SavedPartner[] = [

@@ -73,7 +73,7 @@ function MatchFoundContent() {
     <div className="flex flex-col min-h-[780px]">
       <TopBar title="Match Found" showBack backHref="/home" />
 
-      <main className="flex-1 overflow-y-auto px-4 pb-8">
+      <main className="flex-1 overflow-y-auto px-4 pb-32">
         {allMatches.length > 1 && (
           <div className="mt-4">
             <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
@@ -141,23 +141,23 @@ function MatchFoundContent() {
         </div>
       </main>
 
-      <div className="mt-auto border-t border-slate-200 bg-white px-4 py-4">
+      <div className="sticky bottom-0 left-0 right-0 z-30 mt-auto border-t border-slate-200 bg-white p-4">
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
             onClick={handleAccept}
-            className="flex-1 min-w-[110px] py-3 rounded-xl bg-sky-600 text-white font-semibold text-center hover:bg-sky-700"
+            className="flex-1 min-w-0 truncate whitespace-nowrap py-3 rounded-xl bg-sky-600 text-sm text-white font-semibold text-center hover:bg-sky-700"
           >
             Accept Match
           </button>
-          <button type="button" onClick={handlePass} className="flex-1 min-w-[90px] py-3 rounded-xl border border-slate-200 font-medium text-center hover:bg-slate-50">
+          <button type="button" onClick={handlePass} className="flex-1 min-w-0 truncate whitespace-nowrap py-3 rounded-xl border border-slate-200 text-sm font-medium text-center hover:bg-slate-50">
             Pass
           </button>
           <button
             type="button"
             onClick={handleSave}
             disabled={isSaved}
-            className={`py-3 px-4 rounded-xl border font-medium ${isSaved ? "border-slate-100 bg-slate-50 text-slate-400" : "border-slate-200 hover:bg-slate-50"}`}
+            className={`min-w-0 max-w-[120px] truncate whitespace-nowrap py-3 px-4 rounded-xl border text-sm font-medium ${isSaved ? "border-slate-100 bg-slate-50 text-slate-400" : "border-slate-200 hover:bg-slate-50"}`}
           >
             {isSaved ? "Saved" : "Save Partner"}
           </button>
