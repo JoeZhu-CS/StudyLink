@@ -43,10 +43,9 @@ function MatchingContent() {
         return
       }
 
-      let matches = getMatchingSessions(course, location, studyStyle, goal, date)
-      if (matches.length === 0) {
-        matches = getMatchingSessions(course, location, studyStyle, goal)
-      }
+      const matches = getMatchingSessions(course, location, studyStyle, goal).map((session) => (
+        date ? { ...session, date } : session
+      ))
       if (matches.length > 0) {
         const top3 = matches.slice(0, 3)
         const picked = top3[0]

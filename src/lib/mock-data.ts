@@ -436,8 +436,7 @@ export function getMatchingSessions(
   course: string,
   location: string,
   studyStyle: string,
-  goal: string,
-  date?: string
+  goal: string
 ): Session[] {
   const normalizedCourse = course.trim().toUpperCase()
   if (!normalizedCourse) return []
@@ -452,7 +451,6 @@ export function getMatchingSessions(
   return ALL_SESSIONS
     .filter((session) => {
       if (session.course.trim().toUpperCase() !== normalizedCourse) return false
-      if (date && session.date !== date) return false
       return true
     })
     .map((session) => {
