@@ -24,6 +24,7 @@ function isImageSrc(src: string) {
 export function Avatar({ src, size = "md", className }: AvatarProps) {
   if (isImageSrc(src)) {
     return (
+      // eslint-disable-next-line @next/next/no-img-element -- data URLs / arbitrary external profile URLs
       <img
         src={src}
         alt=""

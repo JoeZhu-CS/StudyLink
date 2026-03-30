@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useState, useEffect } from "react"
+import { Suspense, useState, useEffect, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { TopBar } from "@/components/TopBar"
 import { useAppStore } from "@/context/AppStoreContext"
@@ -20,7 +20,7 @@ function MatchFoundContent() {
 
   const sessionId = searchParams.get("sessionId")
   const userSession = sessionId ? getSessionById(sessionId) : null
-  const matches = store.matchedPartners ?? []
+  const matches = useMemo(() => store.matchedPartners ?? [], [store.matchedPartners])
   const match = store.matchedPartner
 
   useEffect(() => {
